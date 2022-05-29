@@ -436,7 +436,7 @@ services:
 {
   "scripts": {
     "dev": "next",
-    "buld": "next build",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {
