@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13.1-alpine
+    container_name: "strapi-backend-db"
+    ports:
+      - 5432:5432
+    command: postgres -c stats_temp_directory=/tmp
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - ./backend/db/pgsql-data:/var/lib/postgresql/data
+  backend:
+    image: node:16.13.1
+    ports:
+      - "8080:8080"
+      - "$API_PORT:1337"
+    volumes:
+      - ./backend:/src
+    working_dir: /src/api-data
+    tty: true
+    depends_on:
+      - postgres
+    command: yarn develop
+
+  frontend:
+      build:
+        context: ./frontend
+        args:
+          WORKDIR: $WORKDIR
+          # API_URL: "http://localhost:$API_PORT" # 追加
+      # コンテナで実行したいコマンド(CMD)
+      command: npm run dev
+      volumes:
+        - "./frontend:/$WORKDIR"
+      ports:
+        - "$FRONT_PORT:3000"
+      depends_on:
+        - backend
