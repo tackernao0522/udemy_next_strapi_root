@@ -1,6 +1,6 @@
 [submodule "backend"]
   path = backend
-  url = ./backend
+  url = https://github.com/tackernao0522/udemy_next_strapi_backend
 [submodule "frontend"]
   path = frontend
-  url = ./frontend
+  url = https://github.com/tackernao0522/udemy_next_strapi_frontend
