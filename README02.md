@@ -293,3 +293,18 @@ services:
 + `Application`の`RESTURANT`の中の`find`と`findone`にチェックを入れて`Save`する<br>
 
 + `http://localhost:1337/restaurants`にアクセスしてみる<br>
+
+## 25 GraphQLプラグインをインストールして利用する
+
++ `backend $ touch .yarnrc`を実行<br>
+
++ `backend/.yarnrc`を編集<br>
+
+```:.yanrc
+network-timeout 600000
+```
++ `root docker compose run --rm backend yarn strapi install graphql`を実行<br>
+
++ http://localhost:1337/graphql`にアクセスする<br>
+
+
