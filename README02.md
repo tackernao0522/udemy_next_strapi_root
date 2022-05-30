@@ -282,3 +282,14 @@ services:
 
 + それぞれ`Publish`をクリックする<br>
 
+## 24 レストランのデータを取得できるか確認する
+
++ Strapi ダッシュボードの左の`Settings`をクリック<br>
+
++ `USERS & PERMISSIONS PLUGIN`の`Roles`をクリック<br>
+
++ `Public`をクリック<br>
+
++ `Application`の`RESTURANT`の中の`find`と`findone`にチェックを入れて`Save`する<br>
+
++ `http://localhost:1337/restaurants`にアクセスしてみる<br>
