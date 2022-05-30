@@ -308,3 +308,55 @@ network-timeout 600000
 + http://localhost:1337/graphql`にアクセスする<br>
 
 + `root $ docker compose run --rm frontend yarn add @apollo/react-hooks@3.1.5 @apollo/react-ssr@3.1.5 apollo-boost@0.4.7 apollo-link-http@1.5.17 graphql@15.0.0 next-apollo@3.1.10`を実行<br>
+
+## 27 GraphQLが使えるようにサーバー設定する
+
++ `frontend $ mkdir lib && touch $_/apollo.js`を実行<br>
+
++ `frontend/lib/apollo.js`を編集<br>
+
+```js:apollo.js
+import { HttpLink } from "apollo-link-http"
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http;//localhost:1337";
+
+const config = {
+  link: new HttpLink({
+    uri: `${API_URL}/graphql`
+  })
+}
+
+export default withData(config)
+```
+
++ `frontend/pages/_app.js`を編集<br>
+
+```js:_app.js
+import React from "react"
+import App from "next/app"
+import Head from "next/Head"
+import Layout from "../components/Layout"
+import withData from "../lib/apollo" // 追加
+
+// 編集
+class MyApp extends App {
+  render() {
+    const { Component, pageProps } = this.props
+    return (
+      <>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          />
+        </Head>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </>
+    )
+  }
+}
+
+export default withData(MyApp) // 追加
+```
