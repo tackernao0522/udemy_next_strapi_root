@@ -307,4 +307,4 @@ network-timeout 600000
 
 + http://localhost:1337/graphql`にアクセスする<br>
 
-
++ `root $ docker compose run --rm frontend yarn add @apollo/react-hooks@3.1.5 @apollo/react-ssr@3.1.5 apollo-boost@0.4.7 apollo-link-http@1.5.17 graphql@15.0.0 next-apollo@3.1.10`を実行<br>
