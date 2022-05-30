@@ -317,6 +317,7 @@ network-timeout 600000
 
 ```js:apollo.js
 import { HttpLink } from "apollo-link-http"
+import { withData } from "next-apollo"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http;//localhost:1337";
 
@@ -359,4 +360,36 @@ class MyApp extends App {
 }
 
 export default withData(MyApp) // 追加
+```
+
++ `frontend/pages/index.js`を編集<br>
+
+```js:index.js
+import { Col, Input, InputGroup, InputGroupText, Row } from "reactstrap"
+
+const index = () => {
+  return (
+    <div className="container-fluid">
+      <Row>
+        <Col>
+          <div className="search">
+            <InputGroup>
+              <InputGroupText>探す</InputGroupText>
+              <Input placeholder="レストラン名を入力してください" />
+            </InputGroup>
+          </div>
+        </Col>
+      </Row>
+      <style jsx>{`
+        .search {
+          margin: 20px;
+          width: 500px;
+        }
+      `}
+      </style>
+    </div>
+  );
+}
+
+export default index;
 ```
