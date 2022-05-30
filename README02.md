@@ -393,3 +393,93 @@ const index = () => {
 
 export default index;
 ```
+
+## 29 レストランカードのコンポーネントを作成
+
++ `frontend $ mkdir components/RestaurantsList && touch $_/index.js`を実行<br>
+
+(nafe)<br>
+
++ `frontend/components/RestaurantsList/index.js`を編集<br>
+
+```js:index.js
+import { Row } from "reactstrap";
+
+const RestaurantList = () => {
+  return (
+    <Row>
+      Hello
+    </Row>
+  );
+}
+
+export default RestaurantList;
+```
+
++ `frontend/pages/index.js`を編集<br>
+
+```js:index.js
+import { Col, Input, InputGroup, InputGroupText, Row } from "reactstrap"
+import RestaurantList from "../components/RestauranstList";
+
+const index = () => {
+  return (
+    <div className="container-fluid">
+      <Row>
+        <Col>
+          <div className="search">
+            <InputGroup>
+              <InputGroupText>探す</InputGroupText>
+              <Input placeholder="レストラン名を入力してください" />
+              // 追加
+            </InputGroup>
+          </div>
+          <RestaurantList />
+        </Col>
+      </Row>
+      <style jsx>{`
+        .search {
+          margin: 20px;
+          width: 500px;
+        }
+      `}
+      </style>
+    </div>
+  );
+}
+
+export default index;
+```
+
++ `frontend/components/RestaurantsList/index.js`を編集<br>
+
+```js:index.js
+import Link from "next/link";
+import { Card, CardBody, CardImg, CardTitle, Col, Row } from "reactstrap";
+
+const RestaurantList = () => {
+  return (
+    <Row>
+      <Col>
+        <Card>
+          <CardImg src="" />
+          <CardBody>
+            <CardTitle>Italian Restaurant</CardTitle>
+            <CardTitle>イタリアンのレストランです。</CardTitle>
+          </CardBody>
+          <div className="card-footer">
+            <Link
+              href="/restaurants?id=1"
+              as="/restaurants/1"
+            >
+              <a className="btn btn-primary">もっと見る</a>
+            </Link>
+          </div>
+        </Card>
+      </Col>
+    </Row>
+  );
+}
+
+export default RestaurantList;
+```
