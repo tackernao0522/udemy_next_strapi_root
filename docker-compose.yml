@@ -1,28 +1,31 @@
 version: "3.8"
 
 services:
-  postgres:
-    image: postgres:13.1-alpine
-    container_name: "strapi-backend-db"
-    ports:
-      - 5432:5432
-    command: postgres -c stats_temp_directory=/tmp
-    environment:
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-    volumes:
-      - ./backend/db/pgsql-data:/var/lib/postgresql/data
   backend:
-    image: node:16.13.1
-    ports:
-      - "8080:8080"
-      - "$API_PORT:1337"
+    image: strapi/strapi:alpine
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: strapi
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
     volumes:
-      - ./backend:/src
-    working_dir: /src/api-data
-    tty: true
+      - ./backend/app:/srv/app
+    ports:
+      - '1337:1337'
     depends_on:
       - postgres
-    command: yarn develop
+
+  postgres:
+    image: postgres:13.1-alpine
+    command: postgres -c stats_temp_directory=/tmp
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+    volumes:
+      - ./backend/data:/var/lib/postgresql/data
 
   frontend:
       build:
