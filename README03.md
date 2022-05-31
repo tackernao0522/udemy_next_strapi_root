@@ -58,3 +58,153 @@ const RestaurantList = () => {
 
 export default RestaurantList;
 ```
+
+## 31 GraphQLからAPIを叩いてデータを取得する
+
++ localhost:1337/graphql<br>
+
+graphQLの書き方は<br>
+
+```
+{
+  restaurants {
+    id
+    name
+    description
+    image {
+      url
+    }
+  }
+}
+```
+
+```:results
+{
+  "data": {
+    "restaurants": [
+      {
+        "id": "1",
+        "name": "Italian Restaurant",
+        "description": "イタリアンのレストランです。",
+        "image": [
+          {
+            "url": "/uploads/restaurant1_a38901cd49.jpg"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "Japanese Restaurant",
+        "description": "日本食専門のレストランです。",
+        "image": [
+          {
+            "url": "/uploads/restaurant2_c66a5f710f.jpg"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "Party Restaurant",
+        "description": "パーティ用のレストランです。",
+        "image": [
+          {
+            "url": "/uploads/restaurant3_e33659c1b4.jpg"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
++ `frontend/components/RestaurantsList/index.js`を編集<br>
+
+```js:index.js
+import Link from "next/link";
+import { Card, CardBody, CardImg, CardTitle, Col, Row } from "reactstrap";
+import { gql } from "apollo-boost" // 追加
+import { useQuery } from "@apollo/react-hooks" // 追加
+
+// 追加
+const query = gql`
+{
+  restaurants {
+    id
+    name
+    description
+    image {
+      url
+    }
+  }
+}
+`
+// ここまで
+
+const RestaurantList = () => {
+  // 追加
+  const { loading, error, data } = useQuery(query)
+  console.log(data)
+  // ここまで
+  return (
+    <Row>
+      <Col xs="6" sm="4">
+        <Card style={{ margin: "0 0.5rem 20px 0.5rem" }}>
+          <CardImg src="http://localhost:1337/uploads/large_restaurant1_a38901cd49.jpg" top={true} style={{ height: 250 }} />
+          <CardBody>
+            <CardTitle>Italian Restaurant</CardTitle>
+            <CardTitle>イタリアンのレストランです。</CardTitle>
+          </CardBody>
+          <div className="card-footer">
+            <Link
+              href="/restaurants?id=1"
+              as="/restaurants/1"
+            >
+              <a className="btn btn-primary">もっと見る</a>
+            </Link>
+          </div>
+        </Card>
+      </Col>
+
+      <style jsx>
+        {`
+          a {
+            color: white;
+          }
+          a;link {
+            text-decoration: none;
+            color: white;
+          }
+          a:hover {
+            color: white;
+          }
+          .card-columns {
+            column-count: 3;
+          }
+        `}
+      </style>
+    </Row>
+  );
+}
+
+export default RestaurantList;
+```
+
++ localhost:3000にアクセスしてコンソールログを確認<br>
+
+```:console
+{restaurants: Array(3)}
+restaurants: Array(3)
+0:
+description: "イタリアンのレストランです。"
+id: "1"
+image: Array(1)
+0: {url: '/uploads/restaurant1_a38901cd49.jpg', __typename: 'UploadFile'}
+length: 1
+[[Prototype]]: Array(0)
+name: "Italian Restaurant"
+__typename: "Restaurant"
+[[Prototype]]: Object
+1: {id: '2', name: 'Japanese Restaurant', description: '日本食専門のレストランです。', image: Array(1), __typename: 'Restaurant'}
+2: {id: '3', name: 'Party Restaurant', description: 'パーティ用のレストランです。', image: Array(1), __typename: 'Restaurant'}
+length: 3
+```
