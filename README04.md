@@ -489,3 +489,81 @@ const Restaurants = () => {
 
 export default Restaurants; // 編集
 ```
+
+## 41 レストラン固有ページのレイアウトを修正
+
++ `frontend/pages/restaurants.js`を編集<br>
+
+```js:restaurants.js
+import { Button, Card, CardBody, CardImg, CardTitle, Col, Row } from "reactstrap"; // 編集
+import { gql } from "apollo-boost"
+import { useQuery } from "@apollo/react-hooks"
+import { useRouter } from "next/router"
+
+const GET_RESTAURANT_DISHES = gql`
+  query ($id: ID!) {
+    restaurant(id: $id) {
+      id
+      name
+      dishes {
+        id
+        name
+        description
+        price
+        image {
+          url
+        }
+      }
+    }
+  }
+`
+
+const Restaurants = () => {
+  const router = useRouter()
+  const { loading, error, data } = useQuery(GET_RESTAURANT_DISHES, {
+    variables: { id: router.query.id }
+  })
+  // console.log(data)
+
+  if (error) return "レストランの読み込みに失敗しました。"
+
+  if (loading) return <h1>読み込み中・・・</h1>
+
+  if (data) {
+    const { restaurant } = data
+    return (
+      <> // 追加
+        <h1>{restaurant.name}</h1> // 追加
+        <Row>
+          {restaurant.dishes.map((res) => (
+            <Col xs="6" sm="4" key={res.id} style={{ padding: 0 }}> // 編集
+              <Card style={{ margin: "0 10px" }}> // 編集
+                <CardImg
+                  src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`}
+                  top={true}
+                  style={{ height: 250 }}
+                />
+                <CardBody>
+                  <CardTitle>{res.name}</CardTitle>
+                  <CardTitle>{res.description}</CardTitle>
+                </CardBody>
+                <div className="card-footer">
+                  // 編集
+                  <Button outline color="primary">
+                    + カートに入れる
+                  </Button>
+                  // ここまで
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </>
+    );
+  } else {
+    return <h1>レストランが見つかりませんでした。</h1>
+  }
+}
+
+export default Restaurants;
+```
