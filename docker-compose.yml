@@ -18,7 +18,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:13.1-alpine
+    image: postgres:alpine
     command: postgres -c stats_temp_directory=/tmp
     environment:
       POSTGRES_DB: strapi
@@ -32,12 +32,12 @@ services:
         context: ./frontend
         args:
           WORKDIR: $WORKDIR
-          # API_URL: "http://localhost:$API_PORT" # 追加
+          # API_URL: "http://localhost:1337/graphql" # 追加
       # コンテナで実行したいコマンド(CMD)
-      command: npm run dev
+      command: yarn dev
       volumes:
         - "./frontend:/$WORKDIR"
       ports:
-        - "$FRONT_PORT:3000"
+        - "3000:3000"
       depends_on:
         - backend
