@@ -285,3 +285,47 @@ const RestaurantList = () => {
 
 export default RestaurantList;
 ```
+
+## 33 検索欄に打ち込む値を格納する機能を追加する
+
++ `frontend/pages/index.js`を編集<br>
+
+```js:index.js
+import { useState } from "react";
+import { Col, Input, InputGroup, InputGroupText, Row } from "reactstrap"
+import RestaurantList from "../components/RestaurantsList";
+
+const index = () => {
+  const [query, setQuery] = useState('')
+
+  return (
+    <div className="container-fluid">
+      <Row>
+        <Col>
+          <div className="search">
+            <InputGroup>
+              <InputGroupText>探す</InputGroupText>
+              <Input
+                placeholder="レストラン名を入力してください"
+                // 追加
+                onChange={(e) => setQuery(e.target.value.toLocaleLowerCase())}
+              />
+            </InputGroup>
+          </div>
+          // 編集
+          <RestaurantList search={query} />
+        </Col>
+      </Row>
+      <style jsx>{`
+        .search {
+          margin: 20px;
+          width: 500px;
+        }
+      `}
+      </style>
+    </div>
+  );
+}
+
+export default index;
+```
