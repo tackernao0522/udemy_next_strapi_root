@@ -187,3 +187,63 @@ export const registerUser = async (username, email, password) => {
     })
 }
 ```
+
+## 46 ユーザー状態をグローバルに監視する
+
++ `root $ mkdir frontend/context && touch $_/AppContext.js`を実行<br>
+
++ `frontend/context/AppContext.js`を編集<br>
+
+```js:AppContext.js
+import React, { createContext } from "react"
+
+const AppContext = createContext()
+
+export default AppContext
+```
+
++ `frontend/pages/_app.js`を編集<br>
+
+```js:_app.js
+import React from "react"
+import App from "next/app"
+import Head from "next/Head"
+import Layout from "../components/Layout"
+import withData from "../lib/apollo"
+import AppContext from "../context/AppContext" // 追加
+
+class MyApp extends App {
+  // const [state, setState] = useState(null) と同じものをclassコンポーネントでは下記の書き方になる
+
+  // 追加
+  state = {
+    user: null,
+  }
+
+  setUser = (user) => {
+    this.setState({ user })
+  }
+  // ここまで
+
+  render() {
+    const { Component, pageProps } = this.props
+    return (
+      <AppContext.Provider value={{ user: this.state.user, setUser: this.setUser }}> // 追加
+        <>
+          <Head>
+            <link
+              rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            />
+          </Head>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </>
+      </AppContext.Provider> // 追加
+    )
+  }
+}
+
+export default withData(MyApp)
+```
