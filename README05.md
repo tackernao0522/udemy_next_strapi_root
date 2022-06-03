@@ -5,3 +5,71 @@
 参考: https://docs-v3.strapi.io/developer-docs/latest/development/plugins/users-permissions.html#registration <br>
 
 + `root $ docker compose run --rm forntend yarn add axios@0.19.2 js-cookie@2.2.1 isomorphic-fetch@2.2.1` を実行<br>
+
+## 43 アカウント登録用のページを作成する
+
++ `root $ touch frontend/pages/register.js`を実行<br>
+
+(nafe) <br>
+
++ `frontend/pages/register.js`を編集<br>
+
+```js:register
+import { Button, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
+
+const register = () => {
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <div className="paper">
+            <div className="header">
+              <h2>ユーザー登録</h2>
+            </div>
+          </div>
+          <section className="wrapper">
+            <Form>
+              <fieldset>
+                <FormGroup>
+                  <Label>ユーザー名：</Label>
+                  <Input
+                    type="text"
+                    name="username"
+                    style={{ height: 50, fontsize: "1.2 rem" }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>メールアドレス：</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    style={{ height: 50, fontsize: "1.2 rem" }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>パスワード：</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    style={{ height: 50, fontsize: "1.2 rem" }}
+                  />
+                </FormGroup>
+                <span>
+                  <a href="">
+                    <samall>パスワードをお忘れですか？</samall>
+                  </a>
+                </span>
+                <Button style={{ float: "right", width: 120 }} color="primary">
+                  登録
+                </Button>
+              </fieldset>
+            </Form>
+          </section>
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+export default register;
+```
