@@ -154,3 +154,36 @@ const register = () => {
 
 export default register;
 ```
+
+## 45 アカウント登録やログイン用のファイルを作成する
+
+参考: https://docs-v3.strapi.io/developer-docs/latest/development/plugins/users-permissions.html#concept <br>
+
+参考: https://www.npmjs.com/package/js-cookie <br>
+
++ `root $ touch frontend/lib/auth.js`を実行<br>
+
++ `frontend/lib/auth.js`を編集<br>
+
+```js:auth.js
+import axios from "axios"
+import Cookie from "js-cookie"
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http;//localhost:1337";
+
+// 新しいユーザーを登録
+export const registerUser = async (username, email, password) => {
+  await axios.post(`${API_URL}/auth/local/register`, {
+    username,
+    email,
+    password
+  })
+    .then((res) => {
+      Cookie.set("token", res.data.jwt, { expires: 7 })
+      console.log(res.data.jwt)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+```
