@@ -449,3 +449,171 @@ export default register;
 
 + ユーザー登録をしてみてStrapiに反映されているか確認<br>
 
+## 49 ヘッダーのリンクをユーザー状態によって変更する
+
++ `frontend/pages/register.js`を編集<br>
+
+```js:register.js
+import { useContext, useState } from "react";
+import { Button, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import AppContext from "../context/AppContext";
+import { registerUser } from "../lib/auth";
+
+const register = () => {
+  const appContext = useContext(AppContext)
+  const [data, setData] = useState({ username: "", email: "", password: "" })
+
+  const handleRegister = () => {
+    registerUser(data.username, data.email, data.password)
+      .then((res) => {
+        appContext.setUser({ ...data }) // 編集
+      })
+      .catch((err) => console.log(err))
+  }
+
+  // console.log(data)
+
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <div className="paper">
+            <div className="header">
+              <h2>ユーザー登録</h2>
+            </div>
+          </div>
+          <section className="wrapper">
+            <Form>
+              <fieldset>
+                <FormGroup>
+                  <Label>ユーザー名：</Label>
+                  <Input
+                    type="text"
+                    name="username"
+                    style={{ height: 50, fontsize: "1.2 rem" }}
+                    onChange={(e) => setData({ ...data, username: e.target.value })}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>メールアドレス：</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    style={{ height: 50, fontsize: "1.2 rem" }}
+                    onChange={(e) => setData({ ...data, email: e.target.value })}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>パスワード：</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    style={{ height: 50, fontsize: "1.2 rem" }}
+                    onChange={(e) => setData({ ...data, password: e.target.value })}
+                  />
+                </FormGroup>
+                <span>
+                  <a href="">
+                    <small>パスワードをお忘れですか？</small>
+                  </a>
+                </span>
+                <Button
+                  style={{ float: "right", width: 120 }}
+                  color="primary"
+                  onClick={() => { handleRegister() }}
+                >
+                  登録
+                </Button>
+              </fieldset>
+            </Form>
+          </section>
+        </Col>
+      </Row>
+      <style jsx>
+        {`
+          .paper {
+            text-align: center;
+            margin-top: 50px;
+          }
+          .header {
+            width: 100%;
+            margin-bottom: 30px;
+          }
+          .wrapper {
+            padding: 10px 30px 20px 30px;
+          }
+        `}
+      </style>
+    </Container>
+  );
+}
+
+export default register;
+```
+
++ `frontend/components/Layout.js`を編集<br>
+
+```js:Layout.js
+import React, { useContext } from "react"
+import App from "next/app"
+import Head from "next/Head"
+import Link from "next/link"
+import { Container, Nav, NavItem } from "reactstrap";
+import AppContext from "../context/AppContext";
+
+const Layout = (props) => {
+  const { user, setUser } = useContext(AppContext) // 追加
+  return (
+    <div>
+      <Head>
+        <title>フードデリバリーサービス</title>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        />
+      </Head>
+      <header>
+        <style jsx>
+          {`
+            a {
+              color: white
+            }
+          `}
+        </style>
+        <Nav className="navbar navbar-dark bg-dark">
+          <NavItem>
+            <Link href="/">
+              <a className="navbar-brand">ホーム</a>
+            </Link>
+          </NavItem>
+          <NavItem className="ml-auto">
+            // 編集
+            {user ? (
+              <Link href="/">
+                <a className="nav-link" onClick={() => { setUser(null) }}>ログアウト</a>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <a className="nav-link">ログイン</a>
+              </Link>
+            )}
+          </NavItem>
+          <NavItem>
+            {user ? (
+              <h5>{user.username}</h5>
+            ) : (
+              <Link href="/register">
+                <a className="nav-link">ユーザー新規登録</a>
+              </Link>
+            )}
+          </NavItem>
+          // ここまで
+        </Nav>
+      </header>
+      <Container>{props.children}</Container>
+    </div>
+  );
+}
+
+export default Layout;
+```
