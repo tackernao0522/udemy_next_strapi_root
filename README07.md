@@ -334,13 +334,9 @@ class MyApp extends App {
 
   state = {
     user: null,
-    // 追加
-    cart: {
-      items: [],
-      total: 0,
-    }
-    // ここまで
-  }
+    //商品保有配列と、合計価格を格納したショッピングカートを用意。
+    cart: { items: [], total: 0 }, // 追加
+  };
 
   setUser = (user) => {
     this.setState({ user })
