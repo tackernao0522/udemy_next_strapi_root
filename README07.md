@@ -210,3 +210,108 @@ const Cart = () => {
 
 export default Cart;
 ```
+
+## 57 ショッピングカートをCSSでスタイリングする
+
++ `frontend/components/Cart/index.js`を編集<br>
+
+```js:index.js
+import { Badge, Button, Card, CardBody, CardTitle } from "reactstrap";
+import Link from "next/link"
+
+const Cart = () => {
+  return (
+    <div>
+      // 編集
+      <Card style={{ padding: "10px 5px" }}>
+        <CardTitle
+          style={{
+            margin: 10,
+            textAlign: "center",
+            fontweight: 600,
+            fontSize: 25
+          }}
+        >
+        // ここまで
+          注文一覧
+        </CardTitle>
+        <hr />
+        <CardBody style={{ padding: 10 }}> // 編集
+          <div style={{ marginBottom: 6 }}> // 編集
+            <small>料理：</small>
+          </div>
+          <div>
+            <div className="items-one" style={{ marginBottom: 15 }}> // 編集
+              <span id="item-price">&nbsp; 200円</span>
+              <span id="item-name">&nbsp; サラダ</span>
+              <div>
+                // 編集
+                <Button
+                  style={{
+                    height: 25,
+                    padding: 0,
+                    width: 15,
+                    marginRight: 5,
+                    marginLeft: 10
+                  }}
+                  color="link"
+                >
+                  +
+                </Button>
+                <Button
+                  style={{
+                    height: 25,
+                    padding: 0,
+                    width: 15,
+                    marginRight: 5,
+                    marginLeft: 10
+                  }}
+                  color="link"
+                >
+                 // ここまで
+                  -
+                </Button>
+                <span id="item-quantity" style={{ marginLeft: 5 }}> // 編集
+                  １つ
+                </span>
+              </div>
+            </div>
+            <div>
+              <Badge style={{ width: 200, padding: 10 }} color="light"> // 編集
+                <h5 style={{ fontWeight: 100, color: "gray" }}>合計：</h5> // 編集
+                <h3>1200円</h3>
+              </Badge>
+              <div>
+                <Link href="/checkout">
+                  <Button style={{ width: "100%" }} color="primary"> // 編集
+                    <a>注文する</a>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+      // 追加
+      <style jsx>{`
+        #item-price {
+          font-size: 1.3em;
+          color: rgba(97, 97, 97, 1);
+        }
+        #item-quantity {
+          font-size: 0.95em;
+          padding-bottom: 4px;
+          color: rgba(158, 158, 158, 1);
+        }
+        #item-name {
+          font-size: 1.3em;
+          color: rgba(97, 97, 97, 1);
+        }
+      `}</style>
+      // ここまで
+    </div>
+  );
+}
+
+export default Cart;
+```
