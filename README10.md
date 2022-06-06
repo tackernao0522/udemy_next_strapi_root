@@ -327,3 +327,74 @@ const CheckoutForm = () => {
 
 export default CheckoutForm;
 ```
+
+## 75 カード情報を打ち込むためのCardSectionコンポーネントを作成する
+
++ `root $ docker compose run --rm frontend yarn add @stripe/react-stripe-js`を実行<br>
+
++ `frontend/components/Checkout/CardSeciton.js`を編集<br>
+
+```js:CardSection.js
+import { CardElement } from "@stripe/react-stripe-js"
+
+const CardSecion = () => {
+  return (
+    <div>
+      <div>
+        <label htmlFor="card-element">クレジット/デビットカード</label>
+
+        <div>
+          <fieldset>
+            <div className="form-row">
+              <div id="card-element" style={{ width: "100%" }}>
+                <CardElement />
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default CardSecion;
+```
+
++ `root $ docker compose run --rm frontend yarn add @stripe/stripe-js`を実行<br>
+
++ `frontend/pages/checkout.js`を編集<br>
+
+```js:checkout.js
+import { Elements } from "@stripe/react-stripe-js"; // 追加
+import { loadStripe } from "@stripe/stripe-js" // 追加
+import { Col, Row } from "reactstrap";
+import Cart from "../components/Cart/index"
+import CheckoutForm from "../components/Checkout/CheckoutForm";
+
+const checkout = () => {
+  // 追加
+  const stripePromise = loadStripe(
+    "pk_test_51L7W89JIrxSQKjakE1p3wWfbeAZGsMVSCoaeFGs5GXzvzCooY8Q11VFKeUhIFncBkgF6esJgvwNvY8jgop29Puy800gEkdfyQ2"
+  )
+  // ここまで
+  return (
+    <Row>
+      <Col style={{ paddingRight: 0 }} sm={{ size: 3, order: 1, offset: 2 }}>
+        <h1 style={{ margin: 20, fontSize: 20, textAlign: "center" }}>
+          チェックアウト
+        </h1>
+        <Cart />
+      </Col>
+      <Col style={{ paddingLeft: 5 }} sm={{ size: 6, order: 2 }}>
+        // 追加
+        <Elements stripe={stripePromise}>
+          <CheckoutForm />
+        </Elements>
+        // ここまで
+      </Col>
+    </Row>
+  );
+}
+
+export default checkout;
+```
