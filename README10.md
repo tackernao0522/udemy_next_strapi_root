@@ -398,3 +398,51 @@ const checkout = () => {
 
 export default checkout;
 ```
+
+## 76 カード情報を送信するボタンを作成する
+
++ `fontend/components/Checkout/CardSection.js`を編集<br>
+
+```js:CardSection.js
+import { CardElement } from "@stripe/react-stripe-js"
+
+const CardSecion = () => {
+  return (
+    <div>
+      <div>
+        <label htmlFor="card-element">クレジット/デビットカード</label>
+
+        <div>
+          <fieldset>
+            <div className="form-row">
+              <div id="card-element" style={{ width: "100%" }}>
+                <CardElement />
+              </div>
+              // 追加
+              <br />
+              <div className="order-button-wrapper">
+                <button>注文を確認</button>
+              </div>
+              // ここまで
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      // 追加
+      <style jsx>
+        {`
+          .order-button-wrapper {
+            display: flex;
+            width: 100%;
+            align-items: flex-end;
+            justify-content: flex-end;
+          }
+        `}
+      </style>
+      // ここまで
+    </div>
+  );
+}
+
+export default CardSecion;
+```
