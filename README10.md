@@ -27,3 +27,7 @@
 + `DISH`の`find`と`findone`にチェックを入れる<br>
 
 + `保存`をクリック<br>
+
+## 67 決済システム用にStripeに登録する
+
+参考: https://stripe.com/docs/api <br>
