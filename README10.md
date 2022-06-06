@@ -95,3 +95,51 @@ module.exports = {
 ## 70 バックエンドにStripeライブラリをインストールする
 
 + `root $ docker compose run --rm backend yarn add stripe -D`を実行<br>
+
+## 72 チェックアウトページを作成する
+
++ `root $ mkdir frontend/components/Checkout && touch $_/CheckoutForm.js`を実行<br>
+
+`nafe`<br>
+
++ `frontend/components/Checkout/CheckoutForm.js`を編集<br>
+
+```js:CheckoutForm.js
+const CheckoutForm = () => {
+  return (
+    <div>
+      Enter
+    </div>
+  );
+}
+
+export default CheckoutForm;
+```
+
++ `root $ touch frontend/pages/checkout.js`を実行<br>
+
++ `frontend/pages/checkout.js`を編集<br>
+
+`nafe`<br>
+
+```js:checkout.js
+import { Col, Row } from "reactstrap";
+import Cart from "../components/Cart/index"
+import CheckoutForm from "../components/Checkout/CheckoutForm";
+
+const checkout = () => {
+  return (
+    <Row>
+      <Col>
+        <h1>チェックアウト</h1>
+        <Cart />
+      </Col>
+      <Col>
+        <CheckoutForm />
+      </Col>
+    </Row>
+  );
+}
+
+export default checkout;
+```
