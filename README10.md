@@ -92,3 +92,6 @@ module.exports = {
 };
 ```
 
+## 70 バックエンドにStripeライブラリをインストールする
+
++ `root $ docker compose run --rm backend yarn add stripe -D`を実行<br>
