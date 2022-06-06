@@ -31,3 +31,24 @@
 ## 67 決済システム用にStripeに登録する
 
 参考: https://stripe.com/docs/api <br>
+
+## 68 バックエンド側で注文用ロジックを構築する
+
++ `backend/app/api/order/controllers/order.js`を編集<br>
+
+```js:order.js
+'use strict';
+
+/**
+ * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#core-controllers)
+ * to customize this controller
+ */
+
+module.exports = {
+  // 注文を作成する
+  create: async (ctx) => {
+    const { address, amount, dishes, token } = JSON.parse(ctx.request.body)
+    const charge =
+  }
+};
+```
